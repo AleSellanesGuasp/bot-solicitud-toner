@@ -1,0 +1,26 @@
+# Credenciales y datos sensibles
+.env
+credentials.json
+token.json
+
+# Entorno virtual
+venv/
+
+# Bases de datos y logs (contienen datos reales)
+*.db
+bot_log.txt
+
+# Capturas de pantalla de depuración
+debug_*.png
+resultado.png
+qr_para_escanear.png
+
+# Scripts de prueba (con credenciales antiguas, no se publican)
+login.py
+leer_correos.py
+filtrar_alerta.py
+buscar_contador.py
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
