@@ -113,9 +113,15 @@ def obtener_contadores(numero_serie):
         page.fill("#login-password", CONTRASENA_PRINTANISTA)
         page.click("#button-login")
         page.wait_for_timeout(3000)
+        
+        if "Login" in page.url:
+            browser.close()
+            raise Exception("El login a Printanista falló. Verificar usuario/contraseña en el .env.")
 
         page.goto("https://pala.printanistahub.com/Devices")
         page.wait_for_timeout(4000)
+
+        page.screenshot(path="debug_pagina_dispositivos.png")
 
         page.fill("#input-searchterm", numero_serie)
         page.keyboard.press("Enter")
@@ -246,8 +252,12 @@ else:
     for msg_id, impresoras in alertas:
         for imp in impresoras:
             registrar(f"Procesando impresora {imp['modelo']} - Serie {imp['numero_serie']}...")
-            contadores = obtener_contadores(imp["numero_serie"])
-
+            try:
+                contadores = obtener_contadores(imp["numero_serie"])
+            except Exception as error:
+                registrar(f"ERROR procesando impresora {imp['numero_serie']}: {error}")
+            continue
+        
             pedido = {
                 "impresora": imp["modelo"],
                 "numero_serie": imp["numero_serie"],
